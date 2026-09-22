@@ -1,0 +1,47 @@
+#include "world.hpp"
+
+void CWorld::spawn(int x, int y, float size, ItemType item) {
+	auto index = y * g_world_size + x;
+
+	if (index < 0 || index >= static_cast<int>(m_cells.size())) {
+		std::println("[CWorld]: spawn index is out of bounds!");
+		return;
+	}
+
+	m_cells[index] = Cell{ size, item };
+}
+
+void CWorld::render() {
+	//rlPushMatrix();
+	//rlTranslatef(0, 25 * 50, 0);
+	//rlRotatef(90, 1, 0, 0);
+	//DrawGrid(100, 50);
+	//rlPopMatrix();
+
+	for (auto [i, cell] : m_cells | std::views::enumerate) {
+		if (cell.type == ItemType::NONE) continue;
+		int x = i % g_world_size;
+		int y = i / g_world_size;
+		
+		Color color{};
+
+		switch (cell.type) {
+			case ItemType::OBSTACLE: {
+				color = RED;
+			}
+			break;
+
+			case ItemType::TARGET: {
+				color = BLUE;
+			}
+			break;
+
+			case ItemType::STATION: {
+				color = YELLOW;
+			}
+			break;
+		}
+
+		DrawRectangle(x * g_cell_pixel_size, y * g_cell_pixel_size, static_cast<int>(cell.size), static_cast<int>(cell.size), color);
+	}
+}

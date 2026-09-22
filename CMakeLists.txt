@@ -39,6 +39,8 @@ set(kevigator_SOURCES
 	"src/camera.hpp"
 	"src/main.cpp"
 	"src/pch.hpp"
+	"src/world.cpp"
+	"src/world.hpp"
 )
 
 add_executable(kevigator)
