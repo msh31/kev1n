@@ -4,8 +4,8 @@
 
 auto main() -> int {
     //Window
-    constexpr int g_window_width = 800;
-    constexpr int g_window_height = 450;
+    constexpr int g_window_width = 1600;
+    constexpr int g_window_height = 900;
 
     //Text
     const int g_text_x = 190;
