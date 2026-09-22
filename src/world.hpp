@@ -14,7 +14,7 @@ struct Cell {
 class CWorld {
 public:
 	void render();
-	void spawn(int x, int y, float size, ItemType item);
+	void spawn_item(int x, int y, float size, ItemType item);
 
 private:
 	std::array<Cell, g_world_size * g_world_size> m_cells;

@@ -1,6 +1,6 @@
 #include "world.hpp"
 
-void CWorld::spawn(int x, int y, float size, ItemType item) {
+void CWorld::spawn_item(int x, int y, float size, ItemType item) {
 	auto index = y * g_world_size + x;
 
 	if (x < 0 || x >= g_world_size || y < 0 || y >= g_world_size) {
