@@ -12,7 +12,7 @@ auto main() -> int {
     InitWindow(g_window_width, g_window_height, "Kevigator");
     SetTargetFPS(60);
 
-    world->spawn(0, 0, 30, ItemType::OBSTACLE);
+    world->spawn(0, 0, 40, ItemType::OBSTACLE);
 
     while (!WindowShouldClose()) {
         //Updates
