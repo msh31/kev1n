@@ -32,11 +32,38 @@ project(kevigator
 		CXX
 )
 
+include(FetchContent)
+
+# Fix warnings about DOWNLOAD_EXTRACT_TIMESTAMP
+if(POLICY CMP0135)
+	cmake_policy(SET CMP0135 NEW)
+endif()
+message(STATUS "Fetching nlohmann_json (v3.12.0)...")
+FetchContent_Declare(nlohmann_json
+	GIT_REPOSITORY
+		"https://github.com/nlohmann/json"
+	GIT_TAG
+		v3.12.0
+)
+FetchContent_MakeAvailable(nlohmann_json)
+
+set(CPR_CURL_USE_LIBPSL OFF CACHE BOOL "" FORCE)
+set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+message(STATUS "Fetching cpr (1.14.2)...")
+FetchContent_Declare(cpr
+	GIT_REPOSITORY
+		"https://github.com/libcpr/cpr/"
+	GIT_TAG
+		1.14.2
+)
+FetchContent_MakeAvailable(cpr)
+
 # Target: kevigator
 set(kevigator_SOURCES
 	cmake.toml
 	"src/camera.cpp"
 	"src/camera.hpp"
+	"src/globals.hpp"
 	"src/main.cpp"
 	"src/pch.hpp"
 	"src/world.cpp"
@@ -70,6 +97,8 @@ target_link_libraries(kevigator PRIVATE
 	gdi32
 	user32
 	shell32
+	nlohmann_json::nlohmann_json
+	cpr::cpr
 )
 
 target_precompile_headers(kevigator PRIVATE

@@ -10,6 +10,15 @@ languages = ["CXX"]
 [variables]
 CMAKE_EXPORT_COMPILE_COMMANDS = true
 
+# dependencies
+[fetch-content.nlohmann_json]
+git = "https://github.com/nlohmann/json"
+tag = "v3.12.0"
+[fetch-content.cpr]
+git = "https://github.com/libcpr/cpr/"
+tag = "1.14.2"
+options = { CPR_CURL_USE_LIBPSL = false, BUILD_EXAMPLES = false }
+
 [target.kevigator]
 type = "executable"
 sources = [
@@ -27,7 +36,9 @@ link-libraries = [
     "winmm",
     "gdi32",
     "user32",
-    "shell32"
+    "shell32",
+    "nlohmann_json::nlohmann_json",
+    "cpr::cpr"
 ]
 compile-options = ["/W4"]
 precompile-headers = ["src/pch.hpp"]
