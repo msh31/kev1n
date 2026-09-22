@@ -12,11 +12,11 @@ void CWorld::spawn(int x, int y, float size, ItemType item) {
 }
 
 void CWorld::render() {
-	//rlPushMatrix();
-	//rlTranslatef(0, 25 * 50, 0);
-	//rlRotatef(90, 1, 0, 0);
-	//DrawGrid(100, 50);
-	//rlPopMatrix();
+	rlPushMatrix();
+	rlTranslatef(0, 25 * 50, 0);
+	rlRotatef(90, 1, 0, 0);
+	DrawGrid(g_world_size, g_cell_pixel_size);
+	rlPopMatrix();
 
 	for (auto [i, cell] : m_cells | std::views::enumerate) {
 		if (cell.type == ItemType::NONE) continue;
