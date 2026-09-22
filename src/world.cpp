@@ -24,12 +24,6 @@ bool CWorld::is_cell_blocked(int x, int y) const {
 }
 
 void CWorld::render() {
-	rlPushMatrix();
-	rlTranslatef(0, 25 * 50, 0);
-	rlRotatef(90, 1, 0, 0);
-	DrawGrid(g_world_size, g_cell_pixel_size);
-	rlPopMatrix();
-
 	for (auto [i, cell] : m_cells | std::views::enumerate) {
 		if (cell.type == ItemType::NONE) continue;
 		int x = i % g_world_size;
@@ -55,5 +49,6 @@ void CWorld::render() {
 		}
 
 		DrawRectangle(x * g_cell_pixel_size, y * g_cell_pixel_size, static_cast<int>(cell.size), static_cast<int>(cell.size), color);
+		DrawRectangleLines(0, 0, g_world_size * g_cell_pixel_size, g_world_size * g_cell_pixel_size, RED);
 	}
 }
