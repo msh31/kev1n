@@ -1,8 +1,10 @@
 #include "camera.hpp"
+#include "globals.hpp"
 
 CCamera::CCamera() {
     m_camera = {0};
     m_camera.zoom = m_zoom;
+    m_camera.offset = { g_window_width / 2.0f, g_window_height / 2.0f };
 }
 
 void CCamera::update() {
