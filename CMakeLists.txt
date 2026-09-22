@@ -66,6 +66,8 @@ set(kev1n_SOURCES
 	"src/globals.hpp"
 	"src/main.cpp"
 	"src/pch.hpp"
+	"src/robot.cpp"
+	"src/robot.hpp"
 	"src/world.cpp"
 	"src/world.hpp"
 )
