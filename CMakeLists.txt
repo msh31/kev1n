@@ -35,6 +35,8 @@ project(kevigator
 # Target: kevigator
 set(kevigator_SOURCES
 	cmake.toml
+	"src/camera.cpp"
+	"src/camera.hpp"
 	"src/main.cpp"
 	"src/pch.hpp"
 )
