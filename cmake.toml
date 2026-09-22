@@ -4,7 +4,7 @@ version = "3.31"
 cmkr-include = "cmkr.cmake"
 
 [project]
-name = "kevigator"
+name = "kev1n"
 languages = ["CXX"]
 
 [variables]
@@ -19,7 +19,7 @@ git = "https://github.com/libcpr/cpr/"
 tag = "1.14.2"
 options = { CPR_CURL_USE_LIBPSL = false, BUILD_EXAMPLES = false }
 
-[target.kevigator]
+[target.kev1n]
 type = "executable"
 sources = [
     "src/**.cpp",

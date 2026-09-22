@@ -27,7 +27,7 @@ endif()
 # Variables
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-project(kevigator
+project(kev1n
 	LANGUAGES
 		CXX
 )
@@ -58,8 +58,8 @@ FetchContent_Declare(cpr
 )
 FetchContent_MakeAvailable(cpr)
 
-# Target: kevigator
-set(kevigator_SOURCES
+# Target: kev1n
+set(kev1n_SOURCES
 	cmake.toml
 	"src/camera.cpp"
 	"src/camera.hpp"
@@ -70,28 +70,28 @@ set(kevigator_SOURCES
 	"src/world.hpp"
 )
 
-add_executable(kevigator)
+add_executable(kev1n)
 
-target_sources(kevigator PRIVATE ${kevigator_SOURCES})
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${kevigator_SOURCES})
+target_sources(kev1n PRIVATE ${kev1n_SOURCES})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${kev1n_SOURCES})
 
-target_compile_features(kevigator PRIVATE
+target_compile_features(kev1n PRIVATE
 	cxx_std_23
 )
 
-target_compile_options(kevigator PRIVATE
+target_compile_options(kev1n PRIVATE
 	"/W4"
 )
 
-target_include_directories(kevigator PRIVATE
+target_include_directories(kev1n PRIVATE
 	"vendor/raylib-6.0_win64_msvc16/include"
 )
 
-target_link_directories(kevigator PRIVATE
+target_link_directories(kev1n PRIVATE
 	"vendor/raylib-6.0_win64_msvc16/lib"
 )
 
-target_link_libraries(kevigator PRIVATE
+target_link_libraries(kev1n PRIVATE
 	raylib
 	winmm
 	gdi32
@@ -101,11 +101,11 @@ target_link_libraries(kevigator PRIVATE
 	cpr::cpr
 )
 
-target_precompile_headers(kevigator PRIVATE
+target_precompile_headers(kev1n PRIVATE
 	"src/pch.hpp"
 )
 
 get_directory_property(CMKR_VS_STARTUP_PROJECT DIRECTORY ${PROJECT_SOURCE_DIR} VS_STARTUP_PROJECT)
 if(NOT CMKR_VS_STARTUP_PROJECT)
-	set_property(DIRECTORY ${PROJECT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT kevigator)
+	set_property(DIRECTORY ${PROJECT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT kev1n)
 endif()
