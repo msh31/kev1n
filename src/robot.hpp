@@ -1,8 +1,8 @@
 #pragma once
+#include "types.hpp"
 #include "world.hpp"
 
 constexpr int g_robot_size = 40;
-enum class Direction { UP, DOWN, LEFT, RIGHT };
 
 class CRobot {
 public:

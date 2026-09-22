@@ -64,10 +64,13 @@ set(kev1n_SOURCES
 	"src/camera.cpp"
 	"src/camera.hpp"
 	"src/globals.hpp"
+	"src/kev.cpp"
+	"src/kev.hpp"
 	"src/main.cpp"
 	"src/pch.hpp"
 	"src/robot.cpp"
 	"src/robot.hpp"
+	"src/types.hpp"
 	"src/world.cpp"
 	"src/world.hpp"
 )

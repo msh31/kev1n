@@ -46,5 +46,4 @@ auto main() -> int {
 
     CloseWindow();
     return 0;
-
 }

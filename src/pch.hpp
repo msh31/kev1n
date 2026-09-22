@@ -7,4 +7,7 @@
 	#include <print>
 	#include <array>
 	#include <ranges>
+	#include <optional>
+	#include <mutex>
+	#include <thread>
 #endif
