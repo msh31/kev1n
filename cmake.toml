@@ -1,0 +1,34 @@
+# Reference: https://build-cpp.github.io/cmkr/cmake-toml
+[cmake]
+version = "3.31"
+cmkr-include = "cmkr.cmake"
+
+[project]
+name = "kevigator"
+languages = ["CXX"]
+
+[variables]
+CMAKE_EXPORT_COMPILE_COMMANDS = true
+
+[target.kevigator]
+type = "executable"
+sources = [
+    "src/**.cpp",
+    "src/**.hpp"
+]
+include-directories = [
+    "vendor/raylib-6.0_win64_msvc16/include"
+]
+link-directories = [
+    "vendor/raylib-6.0_win64_msvc16/lib"
+]
+link-libraries = [
+    "raylib",
+    "winmm",
+    "gdi32",
+    "user32",
+    "shell32"
+]
+compile-options = ["/W4"]
+precompile-headers = ["src/pch.hpp"]
+compile-features = ["cxx_std_23"]
