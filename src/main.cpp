@@ -1,16 +1,8 @@
+#include "globals.hpp"
 #include "camera.hpp"
 #include "world.hpp"
 
 auto main() -> int {
-    //Window
-    constexpr int g_window_width = 1600;
-    constexpr int g_window_height = 900;
-
-    //Text
-    const int g_text_x = 190;
-    const int g_text_y = 200;
-    int g_font_size = 20;
-
     //2D camera
     CCamera camera;
 
@@ -43,4 +35,5 @@ auto main() -> int {
 
     CloseWindow();
     return 0;
+
 }
