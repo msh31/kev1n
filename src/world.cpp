@@ -11,6 +11,18 @@ void CWorld::spawn_item(int x, int y, float size, ItemType item) {
 	m_cells[index] = Cell{ size, item };
 }
 
+bool CWorld::is_cell_blocked(int x, int y) const {
+	auto index = y * g_world_size + x;
+
+	if (x < 0 || x >= g_world_size || y < 0 || y >= g_world_size) {
+		std::println("[CWorld]: requested cell index is out of bounds!");
+		return true;
+	}
+
+	if (m_cells[index].type == ItemType::NONE) return false;
+	return true;
+}
+
 void CWorld::render() {
 	rlPushMatrix();
 	rlTranslatef(0, 25 * 50, 0);
