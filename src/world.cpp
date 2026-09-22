@@ -3,7 +3,7 @@
 void CWorld::spawn(int x, int y, float size, ItemType item) {
 	auto index = y * g_world_size + x;
 
-	if (index < 0 || index >= static_cast<int>(m_cells.size())) {
+	if (x < 0 || x >= g_world_size || y < 0 || y >= g_world_size) {
 		std::println("[CWorld]: spawn index is out of bounds!");
 		return;
 	}
