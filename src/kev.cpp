@@ -1,5 +1,6 @@
 #include "kev.hpp"
 #include <cpr/cpr.h>
+#include "globals.hpp"
 
 constexpr std::string_view endpoint{ "http://127.0.0.1:8009/v1/systemone" };
 
@@ -33,12 +34,33 @@ void CKev::worker_loop( ) {
         m_pending_state.clear( );
         lock.unlock( );
 
+        Decision decision;
+
         try {
             json data = build_request(state);
             cpr::Response r = cpr::Post(
                 cpr::Url{ endpoint }, cpr::Body{ data.dump() }, cpr::Header{ { "content-type", "application/json" } });
 
             data = json::parse( r.text );
+
+            double confidence = data.at("answers").at("direction").at("confidence");
+            std::string direction = data.at("answers").at("direction").at("choice");
+
+            bool under_confidence_threshold = confidence <= g_confidence_threshold;
+            if (under_confidence_threshold) {
+#ifndef NDEBUG
+                std::println("[DEBUG]: choice '{}' was rejected because its confidence level is too low: {:.2f}", direction, confidence);
+#endif
+                continue;
+            }
+            auto it = lookup.find(direction);
+            if (it == lookup.end()) {
+                //this can theoretically never happen with how Jev/Kev works
+                continue;
+            }
+
+            decision.confidence = confidence;
+            decision.direction = it->second;
         }
         catch (const json::exception& err) {
             std::println("[Kev] an error occured whilst parsing the response from Kev: {}", err.what());
@@ -46,6 +68,6 @@ void CKev::worker_loop( ) {
         }
 
         lock.lock( );
-        // m_result = decision; //TODO build this
+        m_result = decision;
     }
 }
