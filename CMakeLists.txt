@@ -49,6 +49,7 @@ FetchContent_MakeAvailable(nlohmann_json)
 
 set(CPR_CURL_USE_LIBPSL OFF CACHE BOOL "" FORCE)
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 message(STATUS "Fetching cpr (1.14.2)...")
 FetchContent_Declare(cpr
 	GIT_REPOSITORY

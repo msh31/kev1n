@@ -17,7 +17,7 @@ tag = "v3.12.0"
 [fetch-content.cpr]
 git = "https://github.com/libcpr/cpr/"
 tag = "1.14.2"
-options = { CPR_CURL_USE_LIBPSL = false, BUILD_EXAMPLES = false }
+options = { CPR_CURL_USE_LIBPSL = false, BUILD_EXAMPLES = false, BUILD_SHARED_LIBS = false }
 
 [target.kev1n]
 type = "executable"
