@@ -84,27 +84,50 @@ target_compile_features(kev1n PRIVATE
 	cxx_std_23
 )
 
-target_compile_options(kev1n PRIVATE
-	"/W4"
-)
+if(WIN32) # windows
+	target_compile_options(kev1n PRIVATE
+		"/W4"
+	)
+endif()
 
-target_include_directories(kev1n PRIVATE
-	"vendor/raylib-6.0_win64_msvc16/include"
-)
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin") # macos
+	target_include_directories(kev1n PRIVATE
+		"vendor/raylib-6.0_macos/include"
+	)
+endif()
 
-target_link_directories(kev1n PRIVATE
-	"vendor/raylib-6.0_win64_msvc16/lib"
-)
+if(WIN32) # windows
+	target_include_directories(kev1n PRIVATE
+		"vendor/raylib-6.0_win64_msvc16/include"
+	)
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin") # macos
+	target_link_directories(kev1n PRIVATE
+		"vendor/raylib-6.0_macos/lib"
+	)
+endif()
+
+if(WIN32) # windows
+	target_link_directories(kev1n PRIVATE
+		"vendor/raylib-6.0_win64_msvc16/lib"
+	)
+endif()
 
 target_link_libraries(kev1n PRIVATE
 	raylib
-	winmm
-	gdi32
-	user32
-	shell32
 	nlohmann_json::nlohmann_json
 	cpr::cpr
 )
+
+if(WIN32) # windows
+	target_link_libraries(kev1n PRIVATE
+		winmm
+		gdi32
+		user32
+		shell32
+	)
+endif()
 
 target_precompile_headers(kev1n PRIVATE
 	"src/pch.hpp"

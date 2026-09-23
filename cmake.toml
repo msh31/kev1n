@@ -25,21 +25,33 @@ sources = [
     "src/**.cpp",
     "src/**.hpp"
 ]
+link-libraries = [
+    "raylib",
+    "nlohmann_json::nlohmann_json",
+    "cpr::cpr"
+]
+precompile-headers = ["src/pch.hpp"]
+compile-features = ["cxx_std_23"]
+
+[target.kev1n.macos]
+include-directories = [
+    "vendor/raylib-6.0_macos/include"
+]
+link-directories = [
+    "vendor/raylib-6.0_macos/lib"
+]
+
+[target.kev1n.windows]
+link-libraries = [
+    "winmm",
+    "gdi32",
+    "user32",
+    "shell32"
+]
+compile-options = ["/W4"]
 include-directories = [
     "vendor/raylib-6.0_win64_msvc16/include"
 ]
 link-directories = [
     "vendor/raylib-6.0_win64_msvc16/lib"
 ]
-link-libraries = [
-    "raylib",
-    "winmm",
-    "gdi32",
-    "user32",
-    "shell32",
-    "nlohmann_json::nlohmann_json",
-    "cpr::cpr"
-]
-compile-options = ["/W4"]
-precompile-headers = ["src/pch.hpp"]
-compile-features = ["cxx_std_23"]
