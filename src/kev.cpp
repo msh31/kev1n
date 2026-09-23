@@ -33,12 +33,17 @@ void CKev::worker_loop( ) {
         m_pending_state.clear( );
         lock.unlock( );
 
-        json data = build_request( state );
-        cpr::Response r = cpr::Post(
-            cpr::Url{ endpoint }, cpr::Body{ data.dump( ) }, cpr::Header{ { "content-type", "application/json" } } );
+        try {
+            json data = build_request(state);
+            cpr::Response r = cpr::Post(
+                cpr::Url{ endpoint }, cpr::Body{ data.dump() }, cpr::Header{ { "content-type", "application/json" } });
 
-        // TODO: guard
-        data = json::parse( r.text );
+            data = json::parse( r.text );
+        }
+        catch (const json::exception& err) {
+            std::println("[Kev] an error occured whilst parsing the response from Kev: {}", err.what());
+            continue;
+        }
 
         lock.lock( );
         // m_result = decision; //TODO build this
