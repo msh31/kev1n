@@ -64,6 +64,10 @@ void CWorld::render( ) {
         case ItemType::STATION: {
             color = YELLOW;
         } break;
+
+        default:
+        case ItemType::NONE: {
+        } break;
         }
 
         DrawRectangle(
