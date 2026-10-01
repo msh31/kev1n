@@ -4,7 +4,7 @@
 CCamera::CCamera( ) {
     m_camera = { 0 };
     m_camera.zoom = m_zoom;
-    m_camera.target = { 768, 768 };
+    m_camera.target = { g_world_size * g_cell_pixel_size / 2.0f, g_world_size * g_cell_pixel_size / 2.0f };
     m_camera.offset = { g_window_width / 2.0f, g_window_height / 2.0f };
 }
 

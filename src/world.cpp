@@ -70,9 +70,7 @@ void CWorld::render( ) {
         } break;
         }
 
-        DrawRectangle(
-            x * g_cell_pixel_size, y * g_cell_pixel_size, static_cast<int>( c.size ), static_cast<int>( c.size ),
-            color );
+        DrawRectangle(x * g_cell_pixel_size, y * g_cell_pixel_size, g_cell_pixel_size, g_cell_pixel_size, color);
     } );
     DrawRectangleLines( 0, 0, g_world_size * g_cell_pixel_size, g_world_size * g_cell_pixel_size, RED );
 }
