@@ -2,14 +2,34 @@
 #include "types.hpp"
 
 #include <nlohmann/json.hpp>
+
 using json = nlohmann::json;
 
 static const std::unordered_map<std::string, Direction> lookup = {
     { "up", Direction::UP }, { "down", Direction::DOWN }, { "left", Direction::LEFT }, { "right", Direction::RIGHT } };
 
+static const std::array<ItemSymbol, 4> legend = {
+    ItemSymbol{ '.', "open" }, //NONE
+    ItemSymbol{ '#', "blocked" }, //OBSTACLE
+    ItemSymbol{ 'T', "target" }, //TARGET
+    ItemSymbol{ 'S', "station" }, //STATION
+};
+
 struct Decision {
         Direction direction;
         double confidence;
+};
+
+struct ThinkingGuard {
+    ThinkingGuard(std::atomic<bool>& thinking) : m_thinking(thinking) {};
+    ~ThinkingGuard() {
+        m_thinking = false;
+    }
+
+    ThinkingGuard(const ThinkingGuard&) = delete;
+    ThinkingGuard& operator=(const ThinkingGuard&) = delete;
+private:
+    std::atomic<bool>& m_thinking;
 };
 
 class CKev {
@@ -26,6 +46,8 @@ class CKev {
         }
 
         void request_decision( const std::string& state );
+
+        bool is_thinking() const { return m_thinking; }
 
         std::optional<Decision> try_get_decision( ) {
             std::scoped_lock lock( m_mutex );
@@ -46,10 +68,12 @@ class CKev {
 
         std::thread m_worker;
         std::atomic<bool> m_running = false;
+        std::atomic<bool> m_thinking = false;
 
         std::mutex m_mutex;
         std::condition_variable m_cv;
 
+        inline std::string explain_legend() const;
         json build_request( const std::string& state );
         void worker_loop( );
 };
