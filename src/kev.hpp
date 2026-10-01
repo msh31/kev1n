@@ -20,8 +20,8 @@ class CKev {
         }
 
         ~CKev( ) {
-            m_running = false;
-            m_cv.notify_one( );
+            { std::scoped_lock lock(m_mutex); m_running = false; }
+            m_cv.notify_one();
             if ( m_worker.joinable( ) ) m_worker.join( );
         }
 
@@ -34,6 +34,11 @@ class CKev {
             m_result = std::nullopt;
             return res;
         }
+
+        CKev(const CKev&) = delete;
+        CKev& operator=(const CKev&) = delete;
+        CKev(CKev&&) = delete;
+        CKev& operator=(CKev&&) = delete;
 
     private:
         std::string m_pending_state{ };
