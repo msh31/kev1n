@@ -1,4 +1,5 @@
 #include "world.hpp"
+#include "types.hpp"
 
 // #ifdef __APPLE__
 //     #include <raylib.h>
@@ -23,6 +24,7 @@ bool CWorld::is_cell_blocked( int x, int y ) const {
 
     auto index = y * g_world_size + x;
     if ( m_cells[index].type == ItemType::NONE ) return false;
+    if ( m_cells[index].type == ItemType::TARGET ) return false;
 
     return true;
 }

@@ -1,7 +1,6 @@
 #pragma once
 #include "globals.hpp"
-
-enum class ItemType { NONE, OBSTACLE, TARGET, STATION };
+#include "types.hpp"
 
 struct Cell {
         float size;
