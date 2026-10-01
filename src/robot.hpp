@@ -1,8 +1,7 @@
 #pragma once
 #include "types.hpp"
 #include "world.hpp"
-
-constexpr int g_robot_size = 40;
+#include "kev.hpp"
 
 class CRobot {
     public:
@@ -12,9 +11,13 @@ class CRobot {
             }
         }
 
+        void update();
         void draw( Color color );
 
-        bool move( Direction direction );
+        [[nodiscard]]
+        bool move( Direction direction ); //TODO: rename this lol
+
+        bool reached_destination = false;
 
         std::pair<int, int> get_pos( ) { return { m_pos_x, m_pos_y }; }
 
@@ -25,5 +28,9 @@ class CRobot {
         [[nodiscard]]
         bool set_pos( int x, int y );
 
+        [[nodiscard]]
+        std::string build_state();
+
         const CWorld& m_world;
+        CKev m_kev;
 };
