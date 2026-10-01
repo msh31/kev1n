@@ -9,4 +9,4 @@ constexpr int g_world_size = 64;
 constexpr int g_cell_pixel_size = 16;
 
 // Kev
-inline double g_confidence_threshold = 0.8;
+inline double g_confidence_threshold = 0.1;
