@@ -13,5 +13,5 @@ class CCamera {
     private:
         Camera2D m_camera;
         int m_zoom_mode = 0; // 0-Mouse Wheel, 1-Mouse Move
-        float m_zoom = 1.0f;
+        float m_zoom = 0.5f;
 };

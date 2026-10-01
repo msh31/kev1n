@@ -1,7 +1,7 @@
 #pragma once
 
-constexpr int g_world_size = 256;
-constexpr int g_cell_pixel_size = 20;
+constexpr int g_world_size = 128;
+constexpr int g_cell_pixel_size = 12;
 
 enum class ItemType { NONE, OBSTACLE, TARGET, STATION };
 
