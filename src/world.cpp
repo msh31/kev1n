@@ -16,15 +16,25 @@ void CWorld::spawn_item( int x, int y, float size, ItemType item ) {
 }
 
 bool CWorld::is_cell_blocked( int x, int y ) const {
-    auto index = y * g_world_size + x;
-
     if ( x < 0 || x >= g_world_size || y < 0 || y >= g_world_size ) {
         //std::println( "[CWorld]: requested cell index is out of bounds!" );
         return true;
     }
 
+    auto index = y * g_world_size + x;
     if ( m_cells[index].type == ItemType::NONE ) return false;
+
     return true;
+}
+
+ItemType CWorld::get_cell_type(int x, int y) const {
+    if (x < 0 || x >= g_world_size || y < 0 || y >= g_world_size) {
+        //std::println( "[CWorld]: requested cell index is out of bounds!" );
+        return ItemType::OBSTACLE;
+    }
+
+    auto index = y * g_world_size + x;
+    return m_cells[index].type;
 }
 
 // this is stolen from SaveManager you can find it here ->
