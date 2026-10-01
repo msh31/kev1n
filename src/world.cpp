@@ -19,7 +19,7 @@ bool CWorld::is_cell_blocked( int x, int y ) const {
     auto index = y * g_world_size + x;
 
     if ( x < 0 || x >= g_world_size || y < 0 || y >= g_world_size ) {
-        std::println( "[CWorld]: requested cell index is out of bounds!" );
+        //std::println( "[CWorld]: requested cell index is out of bounds!" );
         return true;
     }
 
