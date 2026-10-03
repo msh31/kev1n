@@ -6,21 +6,19 @@
 // #endif
 
 void CWorld::spawn_item( int x, int y, float size, ItemType item ) {
+    if (is_cell_out_of_bounds(x, y)) return;
+
     auto index = y * g_world_size + x;
-
-    if ( x < 0 || x >= g_world_size || y < 0 || y >= g_world_size ) {
-        std::println( "[CWorld]: spawn index is out of bounds!" );
-        return;
-    }
-
     m_cells[index] = Cell{ size, item };
 }
 
+bool CWorld::is_cell_out_of_bounds(int x, int y) const {
+    if (x < 0 || x >= g_world_size || y < 0 || y >= g_world_size) return true;
+    return false;
+}
+
 bool CWorld::is_cell_blocked( int x, int y ) const {
-    if ( x < 0 || x >= g_world_size || y < 0 || y >= g_world_size ) {
-        //std::println( "[CWorld]: requested cell index is out of bounds!" );
-        return true;
-    }
+    if (is_cell_out_of_bounds(x, y)) return false;
 
     auto index = y * g_world_size + x;
     if ( m_cells[index].type == ItemType::NONE ) return false;
@@ -30,10 +28,7 @@ bool CWorld::is_cell_blocked( int x, int y ) const {
 }
 
 ItemType CWorld::get_cell_type(int x, int y) const {
-    if (x < 0 || x >= g_world_size || y < 0 || y >= g_world_size) {
-        //std::println( "[CWorld]: requested cell index is out of bounds!" );
-        return ItemType::OBSTACLE;
-    }
+    if (is_cell_out_of_bounds(x, y)) return ItemType::OBSTACLE;
 
     auto index = y * g_world_size + x;
     return m_cells[index].type;
