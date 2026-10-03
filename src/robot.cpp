@@ -15,6 +15,9 @@ void CRobot::update() {
                 reached_destination = true;
             }
         }
+#ifndef NDEBUG
+        std::println("decision: {}, moved?: {}", reverse_lookup.at(decision->direction), res);
+#endif
     }
     m_kev.request_decision(build_state(), allowed_directions());
 }
