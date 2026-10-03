@@ -25,19 +25,19 @@ std::string CKev::explain_legend() const {
 
 json CKev::build_request( const std::string& state, const std::vector<Direction>& allowed) {
     json criteria = json::object();
-    if (criteria.empty()) {
-        for (const auto& [dir, name] : reverse_lookup) criteria[name] = nullptr;
-    }
 
     auto str = std::format("You control a robot moving around a small map, your goal is to get to cell 'T'. If no T is visible move to an open cell, preferring unvisited ones and never #. Here is a legend to help you navigate: {}\nIf T is visible, answer with the direction toward it. Otherwise, pick the direction of an unvisited open cell.", explain_legend());
-
-//#ifndef NDEBUG
-//    std::println("prompt: {}", str);
-//#endif
 
     for (const auto ad : allowed) {
         criteria[reverse_lookup.at(ad)] = nullptr;
     }
+    if (criteria.empty()) {
+        for (const auto& [dir, name] : reverse_lookup) criteria[name] = nullptr;
+    }
+
+//#ifndef NDEBUG
+//    std::println("prompt: {}", str);
+//#endif
 
     return {
         { "state", state },
