@@ -39,4 +39,7 @@ class CRobot {
         CKev m_kev;
 
         std::array<bool, visited_cell_count> m_visited_cells{};
+
+        std::pair<int, int> get_adjacent_pos(Direction direction) const;
+        std::vector<Direction> allowed_directions() const;
 };

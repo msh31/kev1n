@@ -7,6 +7,8 @@ using json = nlohmann::json;
 
 static const std::unordered_map<std::string, Direction> lookup = {
     { "up", Direction::UP }, { "down", Direction::DOWN }, { "left", Direction::LEFT }, { "right", Direction::RIGHT } };
+static const std::unordered_map<Direction, std::string> reverse_lookup = { 
+    { Direction::UP, "up" }, { Direction::DOWN, "down" }, { Direction::LEFT, "left" }, { Direction::RIGHT, "right" } };
 
 static const std::array<ItemSymbol, 4> legend = {
     ItemSymbol{ '.', "open" }, //NONE
@@ -45,7 +47,7 @@ class CKev {
             if ( m_worker.joinable( ) ) m_worker.join( );
         }
 
-        void request_decision( const std::string& state );
+        void request_decision( const std::string& state, const std::vector<Direction>& allowed );
 
         bool is_thinking() const { return m_thinking; }
 
@@ -64,6 +66,7 @@ class CKev {
 
     private:
         std::string m_pending_state{ };
+        std::vector<Direction> m_allowed_directions{};
         std::optional<Decision> m_result = std::nullopt;
 
         std::thread m_worker;
@@ -74,6 +77,6 @@ class CKev {
         std::condition_variable m_cv;
 
         inline std::string explain_legend() const;
-        json build_request( const std::string& state );
+        json build_request( const std::string& state, const std::vector<Direction>& allowed);
         void worker_loop( );
 };

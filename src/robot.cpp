@@ -16,30 +16,13 @@ void CRobot::update() {
             }
         }
     }
-    m_kev.request_decision(build_state());
+    m_kev.request_decision(build_state(), allowed_directions());
 }
 
 bool CRobot::move( Direction direction ) {
-    auto c_pos = get_pos( );
+    std::pair<int, int> pos = get_adjacent_pos(direction);
 
-    int x{ c_pos.first }, y{ c_pos.second };
-
-    switch ( direction ) {
-    case Direction::UP: {
-        y -= 1;
-    } break;
-    case Direction::DOWN: {
-        y += 1;
-    } break;
-    case Direction::LEFT: {
-        x -= 1;
-    } break;
-    case Direction::RIGHT: {
-        x += 1;
-    } break;
-    }
-
-    return set_pos( x, y );
+    return set_pos(pos.first, pos.second );
 }
 
 // private
@@ -56,6 +39,46 @@ bool CRobot::set_pos( int x, int y ) {
     m_pos_y = y;
     m_visited_cells[y * g_world_size + x] = true;
     return true;
+}
+
+std::pair<int, int> CRobot::get_adjacent_pos(Direction direction) const {
+    int x{ m_pos_x }, y{ m_pos_y };
+
+    switch (direction) {
+    case Direction::UP: {
+        y -= 1;
+    } break;
+    case Direction::DOWN: {
+        y += 1;
+    } break;
+    case Direction::LEFT: {
+        x -= 1;
+    } break;
+    case Direction::RIGHT: {
+        x += 1;
+    } break;
+    }
+
+    return { x, y };
+}
+
+std::vector<Direction> CRobot::allowed_directions() const {
+    std::vector<Direction> out{};
+
+    std::array<Direction, 4> directions = {
+        Direction::UP,
+        Direction::DOWN,
+        Direction::LEFT,
+        Direction::RIGHT
+    };
+
+    for (const auto& d : directions) {
+        auto [x, y] = get_adjacent_pos(d);
+        if (!would_move_succeed(x, y)) continue;
+        out.emplace_back(d);
+    }
+
+    return out;
 }
 
 std::string CRobot::build_state(int radius) {
