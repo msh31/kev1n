@@ -24,6 +24,20 @@ auto main( ) -> int {
         if (robot->reached_destination) {
             robot->reached_destination = false;
             toast_expire_time = GetTime() + 3.0;
+            world->spawn_item(robot->get_pos().first, robot->get_pos().second, 40, ItemType::NONE); //overwrites old target - this sucks
+
+            int robot_x = robot->get_pos().first;
+            int robot_y = robot->get_pos().second;
+
+            int new_x = robot_x;
+            int new_y = robot_y;
+
+            do {
+                new_x = GetRandomValue(0, g_world_size - 1);
+                new_y = GetRandomValue(0, g_world_size - 1);
+            } while (world->get_cell_type(new_x, new_y) != ItemType::NONE || (new_x == robot_x && new_y == robot_y));
+
+            world->spawn_item(new_x, new_y, 40, ItemType::TARGET);
         }
 
         // Drawing
