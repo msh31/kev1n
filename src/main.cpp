@@ -10,7 +10,12 @@ auto main( ) -> int {
     auto world = std::make_unique<CWorld>( );
     auto robot = std::make_unique<CRobot>( 20, 30, *world ); // bit odd
 
-    InitWindow( g_window_width, g_window_height, "Kev1n" );
+    const char* window_name = "Kev1n";
+#ifndef NDEBUG
+    window_name = "Kev1n [DEBUG]";
+#endif
+
+    InitWindow( g_window_width, g_window_height, window_name );
     SetTargetFPS( 60 ); //no delta time?????? - yes
 
     // Item spawns
@@ -24,7 +29,7 @@ auto main( ) -> int {
         world->spawn_item(x, y, 40, ItemType::OBSTACLE);
         placed_obstacles += 1;
     }
-    world->spawn_item(20, 32, 40, ItemType::TARGET);
+    world->spawn_item(33, 42, 40, ItemType::TARGET);
 
     while ( !WindowShouldClose( ) ) {
         // Updates
