@@ -43,9 +43,14 @@ bool CRobot::move( Direction direction ) {
 }
 
 // private
-bool CRobot::set_pos( int x, int y ) {
+bool CRobot::would_move_succeed(int x, int y) const {
     if (m_world.is_cell_out_of_bounds(x, y)) return false;
-    if ( m_world.is_cell_blocked( x, y ) ) return false;
+    if (m_world.is_cell_blocked(x, y)) return false;
+    return true;
+}
+
+bool CRobot::set_pos( int x, int y ) {
+    if (!would_move_succeed(x, y)) return false;
 
     m_pos_x = x;
     m_pos_y = y;
@@ -83,5 +88,8 @@ std::string CRobot::build_state(int radius) {
         str += '\n';
     }
 
+#ifndef NDEBUG
+    std::println("[DEBUG] state built:\n{}", str);
+#endif
     return str;
 }

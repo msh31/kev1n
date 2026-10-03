@@ -29,6 +29,8 @@ class CRobot {
 
         [[nodiscard]]
         bool set_pos( int x, int y );
+        [[nodiscard]]
+        bool would_move_succeed(int x, int y) const;
 
         [[nodiscard]]
         std::string build_state(int radius = 4);
