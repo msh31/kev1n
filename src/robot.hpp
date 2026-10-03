@@ -42,5 +42,6 @@ class CRobot {
         std::array<int, visited_cell_count> m_visited_cells{};
 
         std::pair<int, int> get_adjacent_pos(Direction direction) const;
+        std::optional<std::pair<int, int>> get_target_location() const;
         std::vector<Direction> allowed_directions() const;
 };
