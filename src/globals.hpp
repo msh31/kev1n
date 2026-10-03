@@ -9,4 +9,4 @@ constexpr int g_world_size = 64;
 constexpr int g_cell_pixel_size = 16;
 
 // Kev
-constexpr int g_view_radius = 3;
+constexpr int g_view_radius = 10;
