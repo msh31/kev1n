@@ -97,11 +97,11 @@ std::vector<Direction> CRobot::allowed_directions() const {
     return { timed_direction };
 }
 
-std::string CRobot::build_state(int radius) {
+std::string CRobot::build_state() {
     std::string str{};
 
-    for (int y{-radius}; y <= radius; y++) {
-        for (int x{ -radius }; x <= radius; x++) {
+    for (int y{-g_view_radius }; y <= g_view_radius; y++) {
+        for (int x{ -g_view_radius }; x <= g_view_radius; x++) {
             auto wx = m_pos_x + x;
             auto wy = m_pos_y + y;
 

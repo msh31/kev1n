@@ -33,7 +33,7 @@ class CRobot {
         bool would_move_succeed(int x, int y) const;
 
         [[nodiscard]]
-        std::string build_state(int radius = 3);
+        std::string build_state();
 
         const CWorld& m_world;
         CKev m_kev;
