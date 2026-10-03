@@ -68,8 +68,15 @@ void CKev::worker_loop( ) {
 
         try {
             json data = build_request(state, allowed_directions);
+            auto now = std::chrono::steady_clock::now();
+
             cpr::Response r = cpr::Post(
                 cpr::Url{ endpoint }, cpr::Body{ data.dump() }, cpr::Header{ { "content-type", "application/json" } });
+
+            auto request_duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - now).count();
+#ifndef NDEBUG
+            std::println("request took: {}ms", request_duration);
+#endif
 
             data = json::parse( r.text );
 
