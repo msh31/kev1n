@@ -64,7 +64,7 @@ void CKev::worker_loop( ) {
             double confidence = data.at("answers").at("direction").at("confidence");
             std::string direction = data.at("answers").at("direction").at("choice");
 
-            bool under_confidence_threshold = confidence <= g_confidence_threshold;
+            bool under_confidence_threshold = confidence < g_confidence_threshold;
             if (under_confidence_threshold) {
 #ifndef NDEBUG
                 std::println("[DEBUG]: choice '{}' was rejected because its confidence level is too low: {:.2f}", direction, confidence);
