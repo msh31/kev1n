@@ -40,7 +40,8 @@ bool CRobot::set_pos( int x, int y ) {
 
     m_pos_x = x;
     m_pos_y = y;
-    m_visited_cells[y * g_world_size + x] = true;
+    m_visit_counter += 1;
+    m_visited_cells[y * g_world_size + x] = m_visit_counter;
     return true;
 }
 
@@ -66,7 +67,6 @@ std::pair<int, int> CRobot::get_adjacent_pos(Direction direction) const {
 }
 
 std::vector<Direction> CRobot::allowed_directions() const {
-    std::vector<Direction> out{};
     std::vector<Direction> unvisited{};
 
     std::array<Direction, 4> directions = {
@@ -76,19 +76,25 @@ std::vector<Direction> CRobot::allowed_directions() const {
         Direction::RIGHT
     };
 
+    int lowest_time = INT_MAX;
+    Direction timed_direction{};
+
     for (const auto& d : directions) {
         auto [x, y] = get_adjacent_pos(d);
         if (!would_move_succeed(x, y)) continue;
 
-        if (!m_visited_cells[y * g_world_size + x]) {
-            unvisited.push_back(d);
-        }
+        auto vtime = m_visited_cells[y * g_world_size + x];
+        if(vtime == 0) unvisited.push_back(d);
 
-        out.emplace_back(d);
+        if (vtime < lowest_time) {
+            lowest_time = vtime;
+            timed_direction = d;
+        }
     }
 
-    if (unvisited.empty()) return out;
-    return unvisited;
+    if (lowest_time == INT_MAX) return {};
+    if (!unvisited.empty()) return unvisited;
+    return { timed_direction };
 }
 
 std::string CRobot::build_state(int radius) {
