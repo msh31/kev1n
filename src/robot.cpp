@@ -53,11 +53,11 @@ bool CRobot::set_pos( int x, int y ) {
     return true;
 }
 
-std::string CRobot::build_state() {
+std::string CRobot::build_state(int radius) {
     std::string str{};
 
-    for (int y{-2}; y <= 2; y++) {
-        for (int x{ -2 }; x <= 2; x++) {
+    for (int y{-radius}; y <= radius; y++) {
+        for (int x{ -radius }; x <= radius; x++) {
             auto wx = m_pos_x + x;
             auto wy = m_pos_y + y;
 

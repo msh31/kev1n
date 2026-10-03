@@ -31,7 +31,7 @@ class CRobot {
         bool set_pos( int x, int y );
 
         [[nodiscard]]
-        std::string build_state();
+        std::string build_state(int radius = 4);
 
         const CWorld& m_world;
         CKev m_kev;
