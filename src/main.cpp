@@ -14,7 +14,7 @@ auto main( ) -> int {
 
     // Item spawns
     int placed_obstacles = 0;
-    while (placed_obstacles < 69) {
+    while (placed_obstacles < 169) {
         int x = GetRandomValue(0, g_world_size - 1);
         int y = GetRandomValue(0, g_world_size - 1);
         if (world->get_cell_type(x, y) != ItemType::NONE) continue;
