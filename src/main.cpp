@@ -12,9 +12,18 @@ auto main( ) -> int {
     InitWindow( g_window_width, g_window_height, "Kev1n" );
     SetTargetFPS( 60 ); //no delta time?????? - yes
 
-    //TODO: improve this
-    world->spawn_item( 0, 0, 40, ItemType::OBSTACLE );
-    world->spawn_item( 26, 30, 40, ItemType::TARGET );
+    // Item spawns
+    int placed_obstacles = 0;
+    while (placed_obstacles < 69) {
+        int x = GetRandomValue(0, g_world_size - 1);
+        int y = GetRandomValue(0, g_world_size - 1);
+        if (world->get_cell_type(x, y) != ItemType::NONE) continue;
+        if (x == robot->get_pos().first && y == robot->get_pos().second) continue;
+
+        world->spawn_item(x, y, 40, ItemType::OBSTACLE);
+        placed_obstacles += 1;
+    }
+    world->spawn_item(20, 32, 40, ItemType::TARGET);
 
     while ( !WindowShouldClose( ) ) {
         // Updates
