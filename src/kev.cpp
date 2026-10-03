@@ -75,7 +75,7 @@ void CKev::worker_loop( ) {
 
             auto request_duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - now).count();
 #ifndef NDEBUG
-            std::println("request took: {}ms", request_duration);
+            std::println("[DEBUG]: request took: {}ms", request_duration);
 #endif
 
             data = json::parse( r.text );
@@ -83,13 +83,9 @@ void CKev::worker_loop( ) {
             double confidence = data.at("answers").at("direction").at("confidence");
             std::string direction = data.at("answers").at("direction").at("choice");
 
-            bool under_confidence_threshold = confidence < g_confidence_threshold;
-            if (under_confidence_threshold) {
 #ifndef NDEBUG
-                std::println("[DEBUG]: choice '{}' was rejected because its confidence level is too low: {:.2f}", direction, confidence);
+                std::println("[DEBUG]: confidence level: {:.2f}", confidence);
 #endif
-                continue;
-            }
             auto it = lookup.find(direction);
             if (it == lookup.end()) {
                 //this can theoretically never happen with how Jev/Kev works
