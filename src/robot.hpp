@@ -3,6 +3,8 @@
 #include "world.hpp"
 #include "kev.hpp"
 
+constexpr int visited_cell_count = g_world_size * g_world_size;
+
 class CRobot {
     public:
         CRobot( int spawn_x, int spawn_y, const CWorld& world ) : m_world( world ) {
@@ -33,4 +35,6 @@ class CRobot {
 
         const CWorld& m_world;
         CKev m_kev;
+
+        std::array<bool, visited_cell_count> m_visited_cells{};
 };

@@ -5,13 +5,8 @@
 double toast_expire_time = 0.00;
 
 auto main( ) -> int {
-    // 2D camera
     CCamera camera;
-
-    // World
     auto world = std::make_unique<CWorld>( );
-
-    // Robot
     auto robot = std::make_unique<CRobot>( 20, 30, *world ); // bit odd
 
     InitWindow( g_window_width, g_window_height, "Kev1n" );

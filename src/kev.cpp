@@ -23,7 +23,7 @@ std::string CKev::explain_legend() const {
 }
 
 json CKev::build_request( const std::string& state ) {
-    auto str = std::format("You control a robot moving around a small map, your goal is to get to cell 'T'. If no T is visible move to an open cell, preferring unvisited ones and never #. Here is a legend to help you navigate: {}\nAnswer with the direction from R toward T", explain_legend());
+    auto str = std::format("You control a robot moving around a small map, your goal is to get to cell 'T'. If no T is visible move to an open cell, preferring unvisited ones and never #. Here is a legend to help you navigate: {}\nIf T is visible, answer with the direction toward it. Otherwise, pick the direction of an unvisited open cell.", explain_legend());
 
 #ifndef NDEBUG
     std::println("prompt: {}", str);

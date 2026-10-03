@@ -44,12 +44,12 @@ bool CRobot::move( Direction direction ) {
 
 // private
 bool CRobot::set_pos( int x, int y ) {
-    if ( m_world.is_cell_blocked( x, y ) ) {
-        return false;
-    }
+    if (m_world.is_cell_out_of_bounds(x, y)) return false;
+    if ( m_world.is_cell_blocked( x, y ) ) return false;
 
     m_pos_x = x;
     m_pos_y = y;
+    m_visited_cells[y * g_world_size + x] = true;
     return true;
 }
 
@@ -58,10 +58,23 @@ std::string CRobot::build_state() {
 
     for (int y{-2}; y <= 2; y++) {
         for (int x{ -2 }; x <= 2; x++) {
-            auto type = m_world.get_cell_type(m_pos_x + x, m_pos_y + y);
+            auto wx = m_pos_x + x;
+            auto wy = m_pos_y + y;
+
+            if (m_world.is_cell_out_of_bounds(wx, wy)) {
+                str += '#';
+                continue;
+            }
 
             if (x == 0 && y == 0) {
                 str += 'R'; //robot
+                continue;
+            }
+
+            auto type = m_world.get_cell_type(wx, wy);
+            bool visited = m_visited_cells[wy * g_world_size + wx];
+            if (type == ItemType::NONE && visited) {
+                str += 'V'; //visited
                 continue;
             }
 
