@@ -3,6 +3,7 @@
 #include "robot.hpp"
 
 double toast_expire_time = 0.00;
+int hit_count = 0;
 
 auto main( ) -> int {
     CCamera camera;
@@ -33,6 +34,8 @@ auto main( ) -> int {
         if (robot->reached_destination) {
             robot->reached_destination = false;
             toast_expire_time = GetTime() + 3.0;
+            hit_count += 1;
+
             world->spawn_item(robot->get_pos().first, robot->get_pos().second, 40, ItemType::NONE); //overwrites old target - this sucks
 
             int robot_x = robot->get_pos().first;
@@ -66,6 +69,7 @@ auto main( ) -> int {
         DrawTextEx(
             GetFontDefault( ), TextFormat( "[%i, %i]", GetMouseX( ), GetMouseY( ) ),
             Vector2Add( GetMousePosition( ), { -44, -24 } ), 20, 2, LIGHTGRAY );
+        DrawText(TextFormat("Hit count: %d", hit_count), 100, 50, 20, GREEN);
 
 #ifndef NDEBUG
         if ( IsKeyDown( KEY_W ) ) robot->move( Direction::UP );
