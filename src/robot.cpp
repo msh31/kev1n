@@ -67,6 +67,7 @@ std::pair<int, int> CRobot::get_adjacent_pos(Direction direction) const {
 
 std::vector<Direction> CRobot::allowed_directions() const {
     std::vector<Direction> out{};
+    std::vector<Direction> unvisited{};
 
     std::array<Direction, 4> directions = {
         Direction::UP,
@@ -78,10 +79,16 @@ std::vector<Direction> CRobot::allowed_directions() const {
     for (const auto& d : directions) {
         auto [x, y] = get_adjacent_pos(d);
         if (!would_move_succeed(x, y)) continue;
+
+        if (!m_visited_cells[y * g_world_size + x]) {
+            unvisited.push_back(d);
+        }
+
         out.emplace_back(d);
     }
 
-    return out;
+    if (unvisited.empty()) return out;
+    return unvisited;
 }
 
 std::string CRobot::build_state(int radius) {
