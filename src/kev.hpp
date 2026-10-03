@@ -14,7 +14,7 @@ static const std::array<ItemSymbol, 4> legend = {
     ItemSymbol{ '.', "open" }, //NONE
     ItemSymbol{ '#', "blocked" }, //OBSTACLE
     ItemSymbol{ 'T', "target" }, //TARGET
-    ItemSymbol{ 'S', "station" }, //STATION
+    //ItemSymbol{ 'S', "station" }, //STATION
 };
 
 struct Decision {
