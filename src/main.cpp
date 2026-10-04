@@ -18,6 +18,8 @@ auto main( ) -> int {
     InitWindow( g_window_width, g_window_height, window_name );
     SetTargetFPS( 60 ); //no delta time?????? - yes
 
+    SetRandomSeed(69);
+
     // Item spawns
     int placed_obstacles = 0;
     while (placed_obstacles < 169) {
