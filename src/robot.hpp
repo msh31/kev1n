@@ -23,6 +23,8 @@ class CRobot {
 
         std::pair<int, int> get_pos( ) { return { m_pos_x, m_pos_y }; }
 
+        std::vector<Direction> recordings() { return m_recordings; }
+
     private:
         int m_pos_x = -1;
         int m_pos_y = -1;
@@ -44,4 +46,7 @@ class CRobot {
         std::pair<int, int> get_adjacent_pos(Direction direction) const;
         std::optional<std::pair<int, int>> get_target_location() const;
         std::vector<Direction> allowed_directions() const;
+
+        // moves to replay later
+        std::vector<Direction> m_recordings{};
 };

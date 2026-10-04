@@ -25,7 +25,12 @@ void CRobot::update() {
 bool CRobot::move( Direction direction ) {
     std::pair<int, int> pos = get_adjacent_pos(direction);
 
-    return set_pos(pos.first, pos.second );
+    auto res = set_pos(pos.first, pos.second);
+    if (res) {
+        m_recording.emplace_back(direction);
+    }
+
+    return res;
 }
 
 // private
