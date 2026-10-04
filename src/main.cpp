@@ -2,11 +2,13 @@
 #include "globals.hpp"
 #include "robot.hpp"
 
+#include <fstream>
+
 double toast_expire_time = 0.00;
 int hit_count = 0;
-int random_seed = 69;
+unsigned int random_seed = 69;
 
-auto main( ) -> int {
+auto main( int argc, char** argv ) -> int {
     CCamera camera;
     auto world = std::make_unique<CWorld>( );
     auto robot = std::make_unique<CRobot>( 20, 30, *world ); // bit odd
@@ -19,6 +21,7 @@ auto main( ) -> int {
     InitWindow( g_window_width, g_window_height, window_name );
     SetTargetFPS( 60 ); //no delta time?????? - yes
 
+    random_seed = GetRandomValue(0, 69420);
     SetRandomSeed(random_seed);
 
     // Item spawns
@@ -58,6 +61,24 @@ auto main( ) -> int {
             } while (world->get_cell_type(new_x, new_y) != ItemType::NONE || (new_x == robot_x && new_y == robot_y));
 
             world->spawn_item(new_x, new_y, 40, ItemType::TARGET);
+        }
+
+        // save recording
+        if (IsKeyPressed(KEY_R)) {
+            json j;
+            std::string file_name = std::format("recording-{}.json", random_seed);
+            std::ofstream out(file_name);
+            if (!out.is_open()) continue; //should probably log this someday
+
+            j["seed"] = random_seed;
+            j["moves"] = json::array();
+
+            for (const auto& r : robot->recordings()) {
+                auto& it = reverse_lookup.at(r);
+                j["moves"].push_back(it);
+            }
+            out << j.dump(4);
+            out.close();
         }
 
         // Drawing

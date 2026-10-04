@@ -27,7 +27,7 @@ bool CRobot::move( Direction direction ) {
 
     auto res = set_pos(pos.first, pos.second);
     if (res) {
-        m_recording.emplace_back(direction);
+        m_recordings.emplace_back(direction);
     }
 
     return res;
