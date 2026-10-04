@@ -28,7 +28,7 @@ link-directories = [
     "vendor/raylib-6.0_webassembly/lib"
 ]
 link-libraries = [
-    "raylib",
+    "raylib.web",
     "nlohmann_json::nlohmann_json"
 ]
 link-options = ["-sUSE_GLFW=3"]

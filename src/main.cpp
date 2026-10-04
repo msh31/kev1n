@@ -108,9 +108,6 @@ auto main( int argc, char** argv ) -> int {
         if (!replay_data.empty()) {
             step_replay(*robot, *world);
         }
-        else {
-            robot->update();
-        }
 
         if (robot->reached_destination) {
             robot->reached_destination = false;

@@ -37,7 +37,7 @@ ItemType CWorld::get_cell_type(int x, int y) const {
 // this is stolen from SaveManager you can find it here ->
 // https://github.com/msh31/SaveManager/blob/b918bd9c6f7cea3397eeebe266270e6b98dd8e62/lib/include/utils/utils.hpp#L132
 template <typename Range, typename Fn> void enumerate( Range& range, Fn fn ) {
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__EMSCRIPTEN__)
     int i = 0;
     for ( auto& r : range ) {
         fn( i, r );

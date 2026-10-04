@@ -1,7 +1,6 @@
 #pragma once
 #include "types.hpp"
 #include "world.hpp"
-#include "kev.hpp"
 
 constexpr int visited_cell_count = g_world_size * g_world_size;
 
@@ -13,7 +12,6 @@ class CRobot {
             }
         }
 
-        void update();
         void draw( Color color );
 
         bool move( Direction direction ); //TODO: rename this lol
@@ -33,18 +31,13 @@ class CRobot {
         [[nodiscard]]
         bool would_move_succeed(int x, int y) const;
 
-        [[nodiscard]]
-        std::string build_state();
-
         const CWorld& m_world;
-        CKev m_kev;
 
         int m_visit_counter{ 0 };
         std::array<int, visited_cell_count> m_visited_cells{};
 
         std::pair<int, int> get_adjacent_pos(Direction direction) const;
         std::optional<std::pair<int, int>> get_target_location() const;
-        std::vector<Direction> allowed_directions() const;
 
         // moves to replay later
         std::vector<Direction> m_recordings{};

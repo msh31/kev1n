@@ -80,7 +80,7 @@ target_link_directories(kev1n PRIVATE
 )
 
 target_link_libraries(kev1n PRIVATE
-	raylib
+	raylib.web
 	nlohmann_json::nlohmann_json
 )
 
