@@ -47,26 +47,12 @@ FetchContent_Declare(nlohmann_json
 )
 FetchContent_MakeAvailable(nlohmann_json)
 
-set(CPR_CURL_USE_LIBPSL OFF CACHE BOOL "" FORCE)
-set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
-message(STATUS "Fetching cpr (1.14.2)...")
-FetchContent_Declare(cpr
-	GIT_REPOSITORY
-		"https://github.com/libcpr/cpr/"
-	GIT_TAG
-		1.14.2
-)
-FetchContent_MakeAvailable(cpr)
-
 # Target: kev1n
 set(kev1n_SOURCES
 	cmake.toml
 	"src/camera.cpp"
 	"src/camera.hpp"
 	"src/globals.hpp"
-	"src/kev.cpp"
-	"src/kev.hpp"
 	"src/main.cpp"
 	"src/pch.hpp"
 	"src/robot.cpp"
@@ -85,53 +71,30 @@ target_compile_features(kev1n PRIVATE
 	cxx_std_23
 )
 
-if(WIN32) # windows
-	target_compile_options(kev1n PRIVATE
-		"/W4"
-	)
-endif()
+target_include_directories(kev1n PRIVATE
+	"vendor/raylib-6.0_webassembly/include"
+)
 
-if(CMAKE_SYSTEM_NAME MATCHES "Darwin") # macos
-	target_include_directories(kev1n PRIVATE
-		"vendor/raylib-6.0_macos/include"
-	)
-endif()
-
-if(WIN32) # windows
-	target_include_directories(kev1n PRIVATE
-		"vendor/raylib-6.0_win64_msvc16/include"
-	)
-endif()
-
-if(CMAKE_SYSTEM_NAME MATCHES "Darwin") # macos
-	target_link_directories(kev1n PRIVATE
-		"vendor/raylib-6.0_macos/lib"
-	)
-endif()
-
-if(WIN32) # windows
-	target_link_directories(kev1n PRIVATE
-		"vendor/raylib-6.0_win64_msvc16/lib"
-	)
-endif()
+target_link_directories(kev1n PRIVATE
+	"vendor/raylib-6.0_webassembly/lib"
+)
 
 target_link_libraries(kev1n PRIVATE
 	raylib
 	nlohmann_json::nlohmann_json
-	cpr::cpr
 )
 
-if(WIN32) # windows
-	target_link_libraries(kev1n PRIVATE
-		winmm
-		gdi32
-		user32
-		shell32
-	)
-endif()
+target_link_options(kev1n PRIVATE
+	-sUSE_GLFW=3
+)
 
 target_precompile_headers(kev1n PRIVATE
 	"src/pch.hpp"
+)
+
+set_target_properties(kev1n PROPERTIES
+	SUFFIX
+		.html
 )
 
 get_directory_property(CMKR_VS_STARTUP_PROJECT DIRECTORY ${PROJECT_SOURCE_DIR} VS_STARTUP_PROJECT)
