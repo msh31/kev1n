@@ -71,7 +71,13 @@ void CKev::worker_loop( ) {
             auto now = std::chrono::steady_clock::now();
 
             cpr::Response r = cpr::Post(
-                cpr::Url{ endpoint }, cpr::Body{ data.dump() }, cpr::Header{ { "content-type", "application/json" } });
+                cpr::Url{ endpoint }, cpr::Body{ data.dump() }, cpr::Header{ { "content-type", "application/json" } }, cpr::Timeout(10000));
+
+            auto err = r.error;
+            if (err) {
+                std::println("[CKev] an error({}) occured: {}", static_cast<int>(err.code), err.message);
+                continue;
+            }
 
             auto request_duration = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - now).count();
 #ifndef NDEBUG
