@@ -84,6 +84,8 @@ std::optional<std::pair<int, int>> CRobot::get_target_location() const {
 std::vector<Direction> CRobot::allowed_directions() const {
     std::vector<Direction> unvisited{};
     std::vector<Direction> closer{};
+    std::vector<Direction> closer_unvisited{};
+
     int distance_to_target = -1;
 
     auto target = get_target_location();
@@ -105,11 +107,6 @@ std::vector<Direction> CRobot::allowed_directions() const {
         auto [x, y] = get_adjacent_pos(d);
         if (!would_move_succeed(x, y)) continue;
 
-        if (target.has_value()) {
-            auto neighbor_distance = std::abs(target->first - x) + std::abs(target->second - y);
-            if (neighbor_distance < distance_to_target) closer.push_back(d);
-        }
-
         auto vtime = m_visited_cells[y * g_world_size + x];
         if(vtime == 0) unvisited.push_back(d);
 
@@ -117,9 +114,21 @@ std::vector<Direction> CRobot::allowed_directions() const {
             lowest_time = vtime;
             timed_direction = d;
         }
+
+        //target search
+        if (target.has_value()) {
+            auto neighbor_distance = std::abs(target->first - x) + std::abs(target->second - y);
+            if (neighbor_distance < distance_to_target) {
+                closer.push_back(d);
+                if (vtime == 0) {
+                    closer_unvisited.push_back(d);
+                }
+            }
+        }
     }
 
     if (lowest_time == INT_MAX) return {};
+    if (!closer_unvisited.empty()) return closer_unvisited;
     if (!closer.empty()) return closer;
     if (!unvisited.empty()) return unvisited;
     return { timed_direction };
