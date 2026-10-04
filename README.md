@@ -1,22 +1,22 @@
 # kev1n
-A simulation of an autonomous robot using Raylib and Kev.
+A robot simulation where a decision-model picks the moves around a grid
 
 ---
 
 ## What is this?
-kev1n is an autonomous robot navigating around a small grid world. Its movement decisions come from __[Kev](https://github.com/jaredpalmer/kev)__, a small & non-generative model that returns typed decisions (such as direction & confidence) rather than generated text.
+kev1n is a simulation using __[Kev](https://github.com/jaredpalmer/kev)__ (A small & non-generative model that returns typed decisions (such as direction & confidence) rather than generated text)  
+
+The model is handed a set of allowed directions and a small grid of its surroundings. Based on those, kev picks the robot's next move.
 
 ## Setup
 Ensure that you have a [kev](https://github.com/jaredpalmer/kev) instance running locally at port ``8009`` 
 
 <!--## Usage-->
 
----
-
 ## Building
 ### Requirements
 * [CMake](https://cmake.org/) 3.23 or later
-* MSVC 2022+
+* A C++23-capable compiler (GCC 15+, Clang 16+, MSVC 2022+)
 
 ### Commands
 ```bash
