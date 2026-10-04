@@ -70,10 +70,6 @@ auto main( ) -> int {
         robot->draw( ORANGE );
         EndMode2D( );
 
-        DrawCircleV( GetMousePosition( ), 4, LIGHTGRAY);
-        DrawTextEx(
-            GetFontDefault( ), TextFormat( "[%i, %i]", GetMouseX( ), GetMouseY( ) ),
-            Vector2Add( GetMousePosition( ), { -44, -24 } ), 20, 2, LIGHTGRAY );
         DrawText(TextFormat("Hit count: %d", hit_count), 100, 50, 20, GREEN);
 
 #ifndef NDEBUG
