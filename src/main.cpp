@@ -6,11 +6,30 @@
 #include <filesystem>
 
 double toast_expire_time = 0.00, rec_save_toast = 0.00;
+double accumulator = 0.00;
+constexpr double step_val = 0.05;
 int hit_count = 0;
 unsigned int random_seed = 69;
 
 size_t replay_index = 0;
 json replay_data{};
+
+void step_replay(CRobot& r, CWorld& w) {
+    if (replay_index >= replay_data["moves"].size()) return;
+    if (accumulator < step_val) return;
+
+    r.move(lookup.at(replay_data["moves"][replay_index].get<std::string>()));
+
+    accumulator -= step_val;
+    replay_index += 1;
+
+    int robot_x = r.get_pos().first;
+    int robot_y = r.get_pos().second;
+
+    if (w.get_cell_type(robot_x, robot_y) == ItemType::TARGET) {
+        r.reached_destination = true;
+    }
+}
 
 auto main( int argc, char** argv ) -> int {
     CCamera camera;
@@ -83,18 +102,11 @@ auto main( int argc, char** argv ) -> int {
     while ( !WindowShouldClose( ) ) {
         // Updates
         camera.update( );
+
+        accumulator += GetFrameTime();
+
         if (!replay_data.empty()) {
-            if (replay_index < replay_data["moves"].size()) {
-                auto mov_res = robot->move(lookup.at(replay_data["moves"][replay_index].get<std::string>()));
-                if (mov_res) {
-                    replay_index += 1;
-                    int robot_x = robot->get_pos().first;
-                    int robot_y = robot->get_pos().second;
-                    if (world->get_cell_type(robot_x, robot_y) == ItemType::TARGET) {
-                        robot->reached_destination = true;
-                    }
-                }
-            }
+            step_replay(*robot, *world);
         }
         else {
             robot->update();

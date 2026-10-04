@@ -16,7 +16,6 @@ class CRobot {
         void update();
         void draw( Color color );
 
-        [[nodiscard]]
         bool move( Direction direction ); //TODO: rename this lol
 
         bool reached_destination = false;
