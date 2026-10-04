@@ -4,6 +4,7 @@
 
 double toast_expire_time = 0.00;
 int hit_count = 0;
+int random_seed = 69;
 
 auto main( ) -> int {
     CCamera camera;
@@ -18,7 +19,7 @@ auto main( ) -> int {
     InitWindow( g_window_width, g_window_height, window_name );
     SetTargetFPS( 60 ); //no delta time?????? - yes
 
-    SetRandomSeed(69);
+    SetRandomSeed(random_seed);
 
     // Item spawns
     int placed_obstacles = 0;
