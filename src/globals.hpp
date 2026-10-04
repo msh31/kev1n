@@ -10,3 +10,4 @@ constexpr int g_cell_pixel_size = 16;
 
 // Kev
 constexpr int g_view_radius = 10;
+constexpr std::string_view g_endpoint{ "http://127.0.0.1:8009/v1/systemone" };

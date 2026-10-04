@@ -2,8 +2,6 @@
 #include <cpr/cpr.h>
 #include "globals.hpp"
 
-constexpr std::string_view endpoint{ "http://127.0.0.1:8009/v1/systemone" };
-
 void CKev::request_decision( const std::string& state, const std::vector<Direction>& allowed ) {
     std::scoped_lock lock( m_mutex );
     m_pending_state = state;
@@ -71,7 +69,7 @@ void CKev::worker_loop( ) {
             auto now = std::chrono::steady_clock::now();
 
             cpr::Response r = cpr::Post(
-                cpr::Url{ endpoint }, cpr::Body{ data.dump() }, cpr::Header{ { "content-type", "application/json" } }, cpr::Timeout(10000));
+                cpr::Url{ g_endpoint }, cpr::Body{ data.dump() }, cpr::Header{ { "content-type", "application/json" } }, cpr::Timeout(10000));
 
             auto err = r.error;
             if (err) {
