@@ -21,5 +21,5 @@ class CWorld {
         bool is_cell_out_of_bounds(int x, int y) const;
 
     private:
-        std::array<Cell, g_world_size * g_world_size> m_cells;
+        std::array<Cell, g_world_size* g_world_size> m_cells{};
 };
