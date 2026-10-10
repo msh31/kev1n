@@ -20,6 +20,7 @@ auto world = std::make_unique<CWorld>();
 auto robot = std::make_unique<CRobot>(20, 30, *world); // bit odd
 
 enum class State { MENU, PLAYING };
+State state = State::MENU;
 
 void step_replay(CRobot& r, CWorld& w) {
     if (replay_index >= replay_data["moves"].size()) return;
@@ -38,8 +39,7 @@ void step_replay(CRobot& r, CWorld& w) {
     }
 }
 
-void frame() {
-
+void game() {
     // Updates
     camera.update();
 
@@ -70,35 +70,12 @@ void frame() {
         world->spawn_item(new_x, new_y, 40, ItemType::TARGET);
     }
 
-    // save recording
-    if (IsKeyPressed(KEY_R) && replay_data.empty()) {
-        json j;
-        std::string file_name = std::format("recording-{}.json", random_seed);
-        std::ofstream out(file_name);
-        if (!out.is_open()) return; //should probably log this someday
-
-        j["seed"] = random_seed;
-        j["moves"] = json::array();
-
-        for (const auto& r : robot->recordings()) {
-            auto& it = reverse_lookup.at(r);
-            j["moves"].push_back(it);
-        }
-        out << j.dump(4);
-        out.close();
-        rec_save_toast = GetTime() + 3.0;
-    }
-
     // Drawing
     BeginDrawing();
     ClearBackground(BLACK);
 
     if (toast_expire_time > GetTime()) {
         DrawText("Target reached!", 100, 100, 20, PINK);
-    }
-    if (rec_save_toast > GetTime()) {
-        auto txt = std::format("Saved recording here: {}", GetWorkingDirectory());
-        DrawText(txt.c_str(), 100, 250, 20, BLUE);
     }
 
     BeginMode2D(camera.get());
@@ -118,6 +95,45 @@ void frame() {
     EndDrawing();
 }
 
+std::array<Rectangle, 3> buttonz{};
+void menu() {
+    BeginDrawing();
+    ClearBackground(BLACK);
+
+    auto sh_c = GetScreenHeight() / 2;
+    auto sw_c = GetScreenWidth() / 2 - MeasureText("Kev1n Demo", 50) / 2;
+
+    DrawText("Kev1n Demo", sw_c, sh_c, 50, GREEN);
+
+    for (size_t i = 0; i < buttonz.size(); ++i) {
+        buttonz[i] = Rectangle{ (float)(GetScreenWidth() / 2 - 100), (float)(sh_c + 80 + i * 70), 200, 50 };
+        DrawRectangleRec(buttonz[i], GRAY);
+
+        auto str = TextFormat("Run %zu", i + 1);
+        auto str_len = MeasureText(str, 20);
+        DrawText(str, buttonz[i].x + (buttonz[i].width - str_len) / 2, buttonz[i].y + (buttonz[i].height - 20) / 2, 20, WHITE);
+
+        if (CheckCollisionPointRec(GetMousePosition(), buttonz[i]) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            std::println("clicked {}", i);
+        }
+    }
+
+    EndDrawing();
+}
+
+void frame() {
+    switch (state) {
+    case State::MENU:
+        menu();
+        break;
+    case State::PLAYING:
+        game();
+        break;
+    default:
+        menu();
+    }
+}
+
 auto main( ) -> int {
     const char* window_name = "Kev1n";
 #ifndef NDEBUG
@@ -127,39 +143,6 @@ auto main( ) -> int {
     InitWindow( g_window_width, g_window_height, window_name );
     SetTargetFPS( 60 ); //no delta time?????? - yes
 
-        //try {
-        //    random_seed = std::stoul(argv[1]);
-        //    std::string file_name = std::format("recording-{}.json", random_seed);
-        //    if(!std::filesystem::exists(file_name)) {
-        //        std::println("[Error] recording for '{}' does not exist!", random_seed);
-        //        CloseWindow();
-        //        return 1;
-        //    }
-        //    std::ifstream in(file_name);
-        //    if (!in.is_open()) {
-        //        std::println("[Error] failed to open recording for reading!");
-        //        CloseWindow();
-        //        return 1;
-        //    };
-
-        //    replay_data = json::parse(in);
-        //}
-        //catch (const json::exception& jex) {
-        //    std::println("[Error] failed to parse recording file!");
-        //    CloseWindow();
-        //    return 1;
-        //}
-        //catch (const std::exception& ex) {
-        //    std::println("[Error] input seed failed to convert, it may be non numeric or out of range");
-        //    CloseWindow();
-        //    return 1;
-        //}
-
-        //if (!replay_data.contains("moves")) {
-        //    std::println("[Error] recording does not contain any moves!");
-        //    CloseWindow();
-        //    return 1;
-        //}
     SetRandomSeed(random_seed);
 
     // Item spawns
