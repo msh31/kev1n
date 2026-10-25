@@ -20,6 +20,10 @@ class CWorld {
         [[nodiscard]]
         bool is_cell_out_of_bounds(int x, int y) const;
 
+        void reset() {
+            m_cells.fill(Cell{ 0.0f, ItemType::NONE });
+        }
+
     private:
         std::array<Cell, g_world_size* g_world_size> m_cells{};
 };

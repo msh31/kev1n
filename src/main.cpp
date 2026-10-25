@@ -95,6 +95,55 @@ void game() {
     EndDrawing();
 }
 
+void setup_game(unsigned int seed) {
+    world->reset();
+    robot = std::make_unique<CRobot>(20, 30, *world);
+    replay_index = 0;
+    accumulator = 0;
+    hit_count = 0;
+    toast_expire_time = 0;
+
+    SetRandomSeed(seed);
+
+    // Items
+    int placed_obstacles = 0;
+    while (placed_obstacles < 169) {
+        int x = GetRandomValue(0, g_world_size - 1);
+        int y = GetRandomValue(0, g_world_size - 1);
+        if (world->get_cell_type(x, y) != ItemType::NONE) continue;
+        if (x == robot->get_pos().first && y == robot->get_pos().second) continue;
+
+        world->spawn_item(x, y, 40, ItemType::OBSTACLE);
+        placed_obstacles += 1;
+    }
+
+    // Target
+    world->spawn_item(33, 42, 40, ItemType::TARGET);
+}
+
+bool start_run(int index) {
+    std::filesystem::path p = std::format("rec{}.json", index);
+
+    std::ifstream f(p);
+    if (!f.is_open()) {
+        std::println(stderr, "[-] failed to open recording '{}'!", p.string());
+        return false;
+    }
+
+    try {
+        replay_data = json::parse(f);
+
+        auto seed = replay_data.at("seed").get<unsigned int>();
+        setup_game(seed);
+    }
+    catch (json::exception& ex) {
+        std::println("[-] failed to parse recording '{}'!", p.string());
+        return false;
+    }
+
+    return true;
+}
+
 std::array<Rectangle, 3> buttonz{};
 void menu() {
     BeginDrawing();
@@ -114,7 +163,8 @@ void menu() {
         DrawText(str, buttonz[i].x + (buttonz[i].width - str_len) / 2, buttonz[i].y + (buttonz[i].height - 20) / 2, 20, WHITE);
 
         if (CheckCollisionPointRec(GetMousePosition(), buttonz[i]) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            std::println("clicked {}", i);
+            //std::println("clicked {}", i);
+            if (start_run(i + 1)) state = State::PLAYING;
         }
     }
 
@@ -143,20 +193,7 @@ auto main( ) -> int {
     InitWindow( g_window_width, g_window_height, window_name );
     SetTargetFPS( 60 ); //no delta time?????? - yes
 
-    SetRandomSeed(random_seed);
-
-    // Item spawns
-    int placed_obstacles = 0;
-    while (placed_obstacles < 169) {
-        int x = GetRandomValue(0, g_world_size - 1);
-        int y = GetRandomValue(0, g_world_size - 1);
-        if (world->get_cell_type(x, y) != ItemType::NONE) continue;
-        if (x == robot->get_pos().first && y == robot->get_pos().second) continue;
-
-        world->spawn_item(x, y, 40, ItemType::OBSTACLE);
-        placed_obstacles += 1;
-    }
-    world->spawn_item(33, 42, 40, ItemType::TARGET);
+    //setup_game(random_seed);
 
     // Main lop
     emscripten_set_main_loop(frame, 0, 1);
