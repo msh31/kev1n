@@ -31,7 +31,12 @@ link-libraries = [
     "raylib.web",
     "nlohmann_json::nlohmann_json"
 ]
-link-options = ["-sUSE_GLFW=3"]
+link-options = [
+    "-sUSE_GLFW=3", 
+    "SHELL:--preload-file ../rec1.json@rec1.json", 
+    "SHELL:--preload-file ../rec2.json@rec2.json", 
+    "SHELL:--preload-file ../rec3.json@rec3.json", 
+]
 precompile-headers = ["src/pch.hpp"]
 compile-features = ["cxx_std_23"]
 
