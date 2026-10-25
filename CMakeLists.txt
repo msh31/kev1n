@@ -86,6 +86,7 @@ target_link_libraries(kev1n PRIVATE
 
 target_link_options(kev1n PRIVATE
 	-sUSE_GLFW=3
+	"SHELL:--shell-file ../shell.html"
 	"SHELL:--preload-file ../rec1.json@rec1.json"
 	"SHELL:--preload-file ../rec2.json@rec2.json"
 	"SHELL:--preload-file ../rec3.json@rec3.json"

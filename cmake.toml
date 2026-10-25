@@ -32,7 +32,8 @@ link-libraries = [
     "nlohmann_json::nlohmann_json"
 ]
 link-options = [
-    "-sUSE_GLFW=3", 
+    "-sUSE_GLFW=3",
+    "SHELL:--shell-file ../shell.html",
     "SHELL:--preload-file ../rec1.json@rec1.json", 
     "SHELL:--preload-file ../rec2.json@rec2.json", 
     "SHELL:--preload-file ../rec3.json@rec3.json", 
